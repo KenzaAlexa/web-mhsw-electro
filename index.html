@@ -1,0 +1,785 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auriel Guntara — D3 Teknik Listrik Polsri | Ketua Bidiksiba PTBA</title>
+  <meta name="description" content="Portfolio resmi Auriel Guntara, Mahasiswa D3 Teknik Listrik Politeknik Negeri Sriwijaya (Polsri) dan Ketua Bidiksiba PT Bukit Asam (PTBA).">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/animations.css">
+  <link rel="stylesheet" href="css/responsive.css">
+
+  <!-- Favicon / Polsri Logo -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/polsri_logo.svg">
+</head>
+<body data-voltage="220V">
+
+  <!-- Interactive Canvases for Electric Sparks & Lightning -->
+  <canvas id="lightning-canvas"></canvas>
+  <canvas id="sparks-canvas"></canvas>
+
+  <!-- ==========================================================================
+       ⚡ TOP TELEMETRY NAVIGATION BAR
+       ========================================================================== -->
+  <header class="top-telemetry-bar">
+    <div class="telemetry-container">
+      <!-- Polsri & Personal Brand -->
+      <a href="#hero" class="nav-brand" id="brand-link">
+        <img src="assets/images/polsri_logo.svg" alt="Logo Politeknik Negeri Sriwijaya" class="brand-polsri-logo">
+        <div class="brand-text">
+          <span class="brand-name">AURIEL GUNTARA <span class="bolt">⚡</span></span>
+          <span class="brand-sub">D3 TEKNIK LISTRIK POLSRI</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav>
+        <ul class="nav-links" id="main-nav-links">
+          <li><a href="#about" class="nav-link">Tentang</a></li>
+          <li><a href="#education" class="nav-link">Polsri</a></li>
+          <li><a href="#bidiksiba" class="nav-link">Bidiksiba PTBA</a></li>
+          <li><a href="#skills" class="nav-link">Keahlian</a></li>
+          <li><a href="#simulator" class="nav-link">Simulator</a></li>
+          <li><a href="#certifications" class="nav-link">Sertifikasi</a></li>
+        </ul>
+      </nav>
+
+      <!-- Voltage Mode Switcher -->
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div class="voltage-control-box" title="Atur Tegangan Listrik Website">
+          <span class="voltage-label">⚡ TEGANGAN:</span>
+          <div class="voltage-btn-group">
+            <button class="voltage-btn active" data-mode="220V" id="btn-volt-220">220V</button>
+            <button class="voltage-btn" data-mode="380V" id="btn-volt-380">380V</button>
+            <button class="voltage-btn" data-mode="500kV" id="btn-volt-500">500kV</button>
+          </div>
+        </div>
+
+        <button class="mobile-nav-toggle" id="mobile-toggle-btn" aria-label="Buka Menu">
+          ☰
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       ⚡ LIVE POWER STATUS RIBBON (GRID TELEMETRY)
+       ========================================================================== -->
+  <div class="telemetry-live-ribbon">
+    <div class="ribbon-item">
+      <span>FREKUENSI: <span class="ribbon-val" id="telemetry-freq">50.00 Hz</span></span>
+    </div>
+    <div class="ribbon-item">
+      <span>POWER FACTOR (COS φ): <span class="ribbon-val" id="telemetry-pf">0.98</span></span>
+    </div>
+    <div class="ribbon-item">
+      <span>TEGANGAN SISTEM: <span class="ribbon-val" id="telemetry-volt">220/380V AC (3-PHASE)</span></span>
+    </div>
+    <div class="ribbon-item">
+      <span>INSTITUSI: <span class="ribbon-val">POLSRI PALEMBANG</span></span>
+    </div>
+    <div class="ribbon-item">
+      <span>ORGANISASI: <span class="ribbon-val">BIDIKSIBA PT BUKIT ASAM</span></span>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       ⚡ HERO SECTION (POWER STATION CORE)
+       ========================================================================== -->
+  <section class="hero-section" id="hero">
+    <div class="hero-wrapper">
+      <!-- Left Content -->
+      <div class="hero-content">
+        <div class="hero-badges-wrapper">
+          <div class="voltage-pill">
+            <span>⚡</span>
+            <span>ELECTRICAL ENGINEERING PORTFOLIO</span>
+          </div>
+          <div class="bidiksiba-pill">
+            <span>KETUA BIDIKSIBA — PT BUKIT ASAM</span>
+          </div>
+          <div class="polsri-pill">
+            <img src="assets/images/polsri_logo.svg" alt="Polsri">
+            <span>D3 TEKNIK LISTRIK POLSRI</span>
+          </div>
+        </div>
+
+        <div class="hero-title-group">
+          <span class="hero-greeting">// ELECTRICAL ENGINEER & STUDENT LEADER</span>
+          <h1 class="hero-name">AURIEL GUNTARA</h1>
+          <div class="hero-role">
+            <span>Electrical Power & Industrial Automation Enthusiast</span>
+          </div>
+          <div class="hero-role-campus">
+            Politeknik Negeri Sriwijaya (POLSRI)
+          </div>
+        </div>
+
+        <p class="hero-bio">
+          Mahasiswa <strong>D3 Teknik Listrik Polsri</strong> dengan spesialisasi sistem tenaga listrik, instalasi industri, kontrol otomasi PLC, dan proteksi tenaga. Dipercaya memegang amanah sebagai <strong>Ketua Bidiksiba (Beasiswa Pendidikan Mahasiswa Sekitar Bukit Asam)</strong>, mengoordinasikan mahasiswa penerima beasiswa unggulan dari perusahaan BUMN energi <strong>PT Bukit Asam Tbk (PTBA)</strong>.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#about" class="btn-electric-primary" id="hero-cta-about">
+            <span>TENTANG AURIEL</span>
+          </a>
+          <a href="#simulator" class="btn-electric-secondary" id="hero-cta-sim">
+            <span>SIMULATOR LISTRIK →</span>
+          </a>
+        </div>
+
+        <div class="hero-quick-specs">
+          <div class="spec-item">
+            <span class="spec-val">3+ THN</span>
+            <span class="spec-lbl">Praktik & Riset Teknik Listrik</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-val">100+ MHS</span>
+            <span class="spec-lbl">Anggota Bidiksiba PTBA Dipimpin</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-val">100%</span>
+            <span class="spec-lbl">Dedikasi & Standar Keselamatan K3</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Visual: Elegant Avatar Card (Clean & Realistic) -->
+      <div class="hero-visual">
+        <div class="avatar-reactor-card">
+          <div class="plasma-arc-ring"></div>
+          
+          <div class="reactor-card-header">
+            <div class="header-brand-duo">
+              <img src="assets/images/polsri_logo.svg" alt="Polsri Logo" title="Politeknik Negeri Sriwijaya">
+              <img src="assets/images/ptba_logo.png" alt="PTBA Logo" title="PT Bukit Asam Tbk">
+            </div>
+            <span class="header-tag-title">POLSRI & BIDIKSIBA</span>
+          </div>
+
+          <div class="avatar-photo-wrapper">
+            <img src="assets/images/image.png" alt="Foto Profil Auriel Guntara - Electrical Engineer" class="avatar-img">
+          </div>
+
+          <div class="reactor-card-footer">
+            <div class="reactor-stat">
+              <span class="reactor-stat-val">D3 ELEKTRO</span>
+              <span class="reactor-stat-lbl">PROGRAM STUDI</span>
+            </div>
+            <div class="reactor-stat">
+              <span class="reactor-stat-val">3-PHASE</span>
+              <span class="reactor-stat-lbl">POWER SYSTEM</span>
+            </div>
+            <div class="reactor-stat">
+              <span class="reactor-stat-val">K3 LISTRIK</span>
+              <span class="reactor-stat-lbl">SAFETY COMPLIANT</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Circuit Separator -->
+  <div class="circuit-separator"><span class="circuit-node-spark"></span></div>
+
+  <!-- ==========================================================================
+       ⚡ ABOUT SECTION (DUAL IDENTITY: POLSRI & PTBA BIDIKSIBA)
+       ========================================================================== -->
+  <section class="section-container" id="about">
+    <div class="section-header reveal-on-scroll">
+      <span class="section-tag">DOKUMENTASI PROFIL</span>
+      <h2 class="section-title">Dedikasi di Jalur <span class="text-gradient">Kelistrikan & Kepemimpinan</span></h2>
+      <p class="section-subtitle">
+        Menggabungkan ketelitian teknik elektro presisi tinggi dengan kepemimpinan organisasi sosial terdepan bersama PT Bukit Asam Tbk.
+      </p>
+    </div>
+
+    <div class="about-grid">
+      <!-- Left Card: Academic & Engineering Focus -->
+      <div class="about-card reveal-on-scroll">
+        <h3 class="about-card-title">
+          <span>Insinyur Muda Berbasis Praktik Kuat</span>
+        </h3>
+        <p class="about-text">
+          Sebagai mahasiswa di <strong>Politeknik Negeri Sriwijaya (Polsri)</strong> — salah satu politeknik negeri terbaik di Indonesia dengan tradisi pendidikan vokasi yang solid — saya mendalami bidang <strong>D3 Teknik Listrik</strong> dengan fokus pada perancangan panel kontrol, sistem proteksi tenaga listrik, motor-motor listrik 3-fasa, serta integrasi programmable logic controller (PLC).
+        </p>
+        <p class="about-text">
+          Pendidikan vokasi Polsri menuntut jam terbang laboratorium dan bengkel kerja listrik yang intensif, melatih saya memahami standar regulasi ketat seperti <strong>PUIL 2011</strong> (Persyaratan Umum Instalasi Listrik) serta keselamatan kerja <strong>K3 Listrik</strong>.
+        </p>
+
+        <div class="about-pillars">
+          <div class="pillar-item">
+            <h4 class="pillar-title">Power & Distribution</h4>
+            <p class="pillar-desc">Perancangan Single Line Diagram, panel distribusi MDP/SDP, dan kalkulasi beban seimbang 3 fasa.</p>
+          </div>
+          <div class="pillar-item">
+            <h4 class="pillar-title">Automation & PLC</h4>
+            <p class="pillar-desc">Pemrograman logic ladder PLC Omron/Siemens, relay kendali, sensor industri, dan sistem starter motor.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Card: PTBA Bidiksiba Spotlight -->
+      <div class="leadership-spotlight-card reveal-on-scroll" id="bidiksiba">
+        <div class="leadership-header">
+          <img src="assets/images/ptba_logo.png" alt="PT Bukit Asam Tbk Logo" class="ptba-official-logo">
+          <span class="bidiksiba-badge-large">CSR PT BUKIT ASAM</span>
+        </div>
+
+        <h3 class="leadership-title">Ketua Forum BIDIKSIBA (Bantuan Biaya Pendidikan Mahasiswa Sekitar Bukit Asam)</h3>
+        
+        <p class="leadership-quote">
+          "Program Bidiksiba merupakan komitmen bantuan pendidikan prestisius dari PT Bukit Asam Tbk (PTBA) untuk mencetak generasi unggul yang siap berkontribusi bagi kemajuan industri energi nasional."
+        </p>
+
+        <p class="about-text" style="font-size: 0.95rem;">
+          Dipercaya sebagai <strong>Ketua Bidiksiba</strong>, saya bertanggung jawab memimpin koordinasi para mahasiswa penerima beasiswa, mengorganisir berbagai program pengembangan kapasitas, pengabdian masyarakat, kepemimpinan karakter, serta menjembatani sinergi komunikasi antara mahasiswa dengan manajemen CSR PT Bukit Asam Tbk.
+        </p>
+
+        <!-- <ul class="leadership-responsibilities">
+          <li>
+            <span class="bolt-check">•</span>
+            <span>Memimpin ratusan mahasiswa penerima beasiswa Bidiksiba lintas angkatan dan prodi.</span>
+          </li>
+          <li>
+            <span class="bolt-check">•</span>
+            <span>Menginisiasi program pembinaan integritas, kepemimpinan, dan monitoring performa akademik.</span>
+          </li>
+          <li>
+            <span class="bolt-check">•</span>
+            <span>Membangun kolaborasi aktif dengan pihak Divisi CSR & Pengembangan Masyarakat PTBA.</span>
+          </li>
+        </ul> -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Circuit Separator -->
+  <div class="circuit-separator"><span class="circuit-node-spark"></span></div>
+
+  <!-- ==========================================================================
+       ⚡ EDUCATION SECTION (POLSRI HIGH-VOLTAGE TRANSMISSION PATHWAY)
+       ========================================================================== -->
+  <section class="section-container" id="education">
+    <div class="section-header reveal-on-scroll">
+      <span class="section-tag">ALMAMATER KAMPUS</span>
+      <h2 class="section-title">Politeknik Negeri <span class="text-gradient">Sriwijaya (POLSRI)</span></h2>
+      <p class="section-subtitle">
+        Pendidikan vokasi keteknikan listrik dengan proporsi praktik langsung 60% dan teori 40%, membina kompetensi siap kerja berstandar industri.
+      </p>
+    </div>
+
+    <div class="education-showcase-box reveal-on-scroll">
+      <div class="education-inner-grid">
+        <!-- Polsri Official Logo from Internet -->
+        <div class="polsri-emblem-center">
+          <img src="assets/images/polsri_logo.svg" alt="Official Logo Polsri" class="polsri-logo-large">
+          <span class="campus-accreditation">AKREDITASI UNGGUL</span>
+          <span style="font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim);">PALEMBANG, SUMATERA SELATAN</span>
+        </div>
+
+        <!-- Academic Details -->
+        <div class="education-details">
+          <div class="edu-badge-row">
+            <span class="edu-degree-badge">DIPLOMA III (D3)</span>
+            <span class="edu-year-badge">JURUSAN TEKNIK ELEKTRO</span>
+          </div>
+
+          <h3 class="edu-major-title">Program Studi D3 Teknik Listrik</h3>
+          <div class="edu-institution">Politeknik Negeri Sriwijaya</div>
+
+          <p class="edu-description">
+            Kurikulum berfokus pada penguasaan instalasi ketenagalistrikan tegangan rendah hingga menengah, mesin-mesin listrik AC/DC, elektronika daya, sistem transmisi dan gardu induk, analisis proteksi, pemeliharaan transformator, serta otomasi berbasis PLC.
+          </p>
+
+          <div>
+            <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--primary-electric); margin-bottom: 0.4rem; font-weight: 700;">
+              KOMPETENSI INTI & MATA KULIAH UNGGULAN:
+            </div>
+            <div class="curriculum-chips-grid">
+              <span class="curriculum-chip">Analisis Sistem Tenaga Listrik</span>
+              <span class="curriculum-chip">Instalasi Tenaga & Penerangan (PUIL)</span>
+              <span class="curriculum-chip">Mesin-Mesin Listrik AC & DC</span>
+              <span class="curriculum-chip">Programmable Logic Controller (PLC)</span>
+              <span class="curriculum-chip">Elektronika Daya & Inverter</span>
+              <span class="curriculum-chip">Proteksi Sistem Tenaga Listrik</span>
+              <span class="curriculum-chip">Keselamatan & Kesehatan Kerja (K3)</span>
+              <span class="curriculum-chip">Gambar Teknik & AutoCAD Electrical</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Circuit Separator -->
+  <div class="circuit-separator"><span class="circuit-node-spark"></span></div>
+
+  <!-- ==========================================================================
+       ⚡ SKILLS SECTION (CLEAN & MODERN SWITCHBOARD)
+       ========================================================================== -->
+  <section class="section-container" id="skills">
+    <div class="section-header reveal-on-scroll">
+      <span class="section-tag">MATRIX KOMPETENSI</span>
+      <h2 class="section-title">Panel Distribusi <span class="text-gradient">Keahlian Teknik</span></h2>
+      <p class="section-subtitle">
+        Indikator kompetensi teknik listrik terkalibrasi melalui jam praktik laboratorium, proyek lapangan, dan pengalaman kepemimpinan.
+      </p>
+    </div>
+
+    <div class="skills-switchboard-grid">
+      <!-- Panel 1: Electrical Power & Installation -->
+      <div class="switchboard-panel reveal-on-scroll current-flow-border">
+        <div class="panel-header">
+          <span class="panel-tagline">DIVISI 01 / TENAGA LISTRIK</span>
+          <h3 class="panel-title">Sistem Tenaga Listrik</h3>
+        </div>
+        <div class="skills-list">
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">Instalasi Listrik Industri (PUIL 2011)</span>
+              <span class="skill-pct">92%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="92%"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">Desain Single Line Diagram (SLD)</span>
+              <span class="skill-pct">90%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="90%"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">Perakitan Panel Starter Motor 3-Fasa</span>
+              <span class="skill-pct">88%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="88%"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">Pengujian & Kalibrasi Beban Listrik</span>
+              <span class="skill-pct">85%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="85%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: Automation & PLC -->
+      <div class="switchboard-panel reveal-on-scroll current-flow-border">
+        <div class="panel-header">
+          <span class="panel-tagline">DIVISI 02 / KENDALI & OTOMASI</span>
+          <h3 class="panel-title">Otomasi & Kontrol</h3>
+        </div>
+        <div class="skills-list">
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">PLC Programming (Omron & Siemens)</span>
+              <span class="skill-pct">87%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="87%"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">Wiring Relay, Timer, & Kontaktor</span>
+              <span class="skill-pct">93%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="93%"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">Integrasi Sensor & Aktuator Industri</span>
+              <span class="skill-pct">84%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="84%"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">Troubleshooting Rangkaian Kontrol</span>
+              <span class="skill-pct">90%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="90%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 3: Engineering Software & CAD -->
+      <div class="switchboard-panel reveal-on-scroll current-flow-border">
+        <div class="panel-header">
+          <span class="panel-tagline">DIVISI 03 / DIGITAL TOOLS</span>
+          <h3 class="panel-title">Software Engineering</h3>
+        </div>
+        <div class="skills-list">
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">AutoCAD Electrical</span>
+              <span class="skill-pct">89%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="89%"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">ETAP (Load Flow & Short Circuit)</span>
+              <span class="skill-pct">82%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="82%"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">CX-Programmer / TIA Portal</span>
+              <span class="skill-pct">85%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="85%"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">Proteus Circuit Simulation</span>
+              <span class="skill-pct">86%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="86%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 4: Leadership & Management -->
+      <div class="switchboard-panel reveal-on-scroll current-flow-border">
+        <div class="panel-header">
+          <span class="panel-tagline">DIVISI 04 / LEADERSHIP</span>
+          <h3 class="panel-title">Leadership & Safety</h3>
+        </div>
+        <div class="skills-list">
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">Kepemimpinan Organisasi (Ketua Bidiksiba)</span>
+              <span class="skill-pct">95%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="95%"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">K3 Listrik & Manajemen Risiko</span>
+              <span class="skill-pct">92%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="92%"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">Public Speaking & Koordinasi Tim</span>
+              <span class="skill-pct">90%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="90%"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <div class="skill-info">
+              <span class="skill-name">Manajemen Program CSR & Acara</span>
+              <span class="skill-pct">88%</span>
+            </div>
+            <div class="skill-bar-meter">
+              <div class="skill-bar-fill" data-width="88%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Circuit Separator -->
+  <div class="circuit-separator"><span class="circuit-node-spark"></span></div>
+
+  <!-- ==========================================================================
+       ⚡ INTERACTIVE CIRCUIT SIMULATOR: OHM'S LAW & POWER ANALYZER
+       ========================================================================== -->
+  <section class="section-container" id="simulator">
+    <div class="section-header reveal-on-scroll">
+      <span class="section-tag">SIMULATOR INTERAKTIF</span>
+      <h2 class="section-title">Kalkulator Hukum Ohm & <span class="text-gradient">Analisis Daya (Watts)</span></h2>
+      <p class="section-subtitle">
+        Geser slider tegangan (Voltage) dan arus (Current) untuk melihat kalkulasi beban daya listrik secara langsung pada dial meter digital.
+      </p>
+    </div>
+
+    <div class="circuit-sim-box reveal-on-scroll">
+      <div class="sim-inner-grid">
+        <!-- Controls Column -->
+        <div class="sim-controls-col">
+          <!-- Voltage Slider -->
+          <div class="sim-slider-group">
+            <div class="slider-header">
+              <span class="slider-title">TEGANGAN (VOLTAGE - V)</span>
+              <span class="slider-display-val" id="sim-voltage-val">220 V</span>
+            </div>
+            <input type="range" class="electric-range-input" id="sim-voltage-slider" min="50" max="400" step="5" value="220">
+            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-dim);">Rentang: 50V (Safety Low) s.d. 400V (3-Phase Industrial)</span>
+          </div>
+
+          <!-- Current Slider -->
+          <div class="sim-slider-group">
+            <div class="slider-header">
+              <span class="slider-title">ARUS BEBAN (CURRENT - I)</span>
+              <span class="slider-display-val" id="sim-current-val">10 A</span>
+            </div>
+            <input type="range" class="electric-range-input" id="sim-current-slider" min="1" max="32" step="0.5" value="10">
+            <span style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-dim);">Rentang: 1 Ampere s.d. 32 Ampere (MCB Standard)</span>
+          </div>
+
+          <!-- Formula Help Box -->
+          <div style="background: rgba(10, 12, 18, 0.8); border: 1px solid var(--border-wire); border-radius: 12px; padding: 1rem; font-family: var(--font-mono); font-size: 0.82rem; color: var(--primary-electric);">
+            <strong>RUMUS LISTRIK:</strong> P = V × I (Daya Nyata) | R = V / I (Resistansi) | 1 HP ≈ 746 Watt
+          </div>
+        </div>
+
+        <!-- Meter Display Column -->
+        <div class="sim-meter-col">
+          <div class="gauge-visual-wrap">
+            <svg class="gauge-svg-ring" viewBox="0 0 200 200">
+              <circle class="gauge-bg-circle" cx="100" cy="100" r="90"></circle>
+              <circle class="gauge-fill-circle" id="sim-gauge-circle" cx="100" cy="100" r="90"></circle>
+            </svg>
+            <div class="gauge-center-readout">
+              <span class="readout-watts" id="sim-watts-readout">2200</span>
+              <span class="readout-unit">WATTS (W)</span>
+            </div>
+          </div>
+
+          <div id="sim-safety-status" style="font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700; color: #00FF88;">
+            NORMAL GRID
+          </div>
+
+          <div class="sim-diagnostics-row">
+            <div class="diag-item">
+              <span class="diag-val" id="sim-resistance-readout">22.00 Ω</span>
+              <span class="diag-lbl">RESISTANSI (R)</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-val" id="sim-hp-readout">2.95 HP</span>
+              <span class="diag-lbl">DAYA KUDA (HORSEPOWER)</span>
+            </div>
+            <div class="diag-item">
+              <span class="diag-val">50 Hz</span>
+              <span class="diag-lbl">FREKUENSI PLN</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Circuit Separator -->
+  <div class="circuit-separator"><span class="circuit-node-spark"></span></div>
+
+  <!-- ==========================================================================
+       ⚡ CERTIFICATIONS & SAFETY RECOGNITIONS
+       ========================================================================== -->
+  <section class="section-container" id="certifications">
+    <div class="section-header reveal-on-scroll">
+      <span class="section-tag">STANDAR & SERTIFIKASI</span>
+      <h2 class="section-title">Sertifikasi & <span class="text-gradient">Prestasi Terverifikasi</span></h2>
+      <p class="section-subtitle">
+        Pengakuan kompetensi resmi di bidang keselamatan kelistrikan, otomasi, dan program kepemimpinan beasiswa PTBA.
+      </p>
+    </div>
+
+    <div class="certs-grid">
+      <div class="cert-card reveal-on-scroll">
+        <div class="cert-content">
+          <h3 class="cert-name">Sertifikasi Kompetensi K3 Listrik</h3>
+          <span class="cert-issuer">Badan Nasional Sertifikasi Profesi (BNSP)</span>
+          <p class="cert-desc">Kompetensi penerapan keselamatan dan kesehatan kerja pada instalasi listrik tegangan rendah & menengah sesuai regulasi Kemnaker RI.</p>
+        </div>
+      </div>
+
+      <div class="cert-card reveal-on-scroll">
+        <div class="cert-content">
+          <h3 class="cert-name">PLC & Industrial Wiring Specialist</h3>
+          <span class="cert-issuer">Lab Otomasi & Kendali Listrik Polsri</span>
+          <p class="cert-desc">Pengujian kelayakan pemrograman PLC, instalasi sensor industri, serta troubleshooting panel starter motor induksi.</p>
+        </div>
+      </div>
+
+      <div class="cert-card reveal-on-scroll">
+        <div class="cert-content">
+          <h3 class="cert-name">Penerima Beasiswa Unggulan Bidiksiba</h3>
+          <span class="cert-issuer">PT Bukit Asam Tbk (PTBA)</span>
+          <p class="cert-desc">Seleksi ketat program beasiswa penuh bagi putra-putri berprestasi daerah untuk menempuh studi teknik di Politeknik Negeri Sriwijaya.</p>
+        </div>
+      </div>
+
+      <div class="cert-card reveal-on-scroll">
+        <div class="cert-content">
+          <h3 class="cert-name">Penghargaan Kepemimpinan Bidiksiba</h3>
+          <span class="cert-issuer">Forum Komunikasi Mahasiswa Bidiksiba</span>
+          <p class="cert-desc">Apresiasi atas dedikasi memimpin organisasi penerima beasiswa dan mengoordinasikan program sosial kemasyarakatan.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       [DIKOMENTARI SEMENTARA] CONTACT SECTION (SUBSTATION DISPATCH TERMINAL)
+       ========================================================================== -->
+  <!--
+  <section class="section-container" id="contact">
+    <div class="section-header reveal-on-scroll">
+      <span class="section-tag">TRANSMISI SINYAL</span>
+      <h2 class="section-title">Hubungkan <span class="text-gradient">Arus Komunikasi</span></h2>
+      <p class="section-subtitle">
+        Terbuka untuk kesempatan magang industri, proyek rancang bangun kelistrikan, kolaborasi penelitian tenaga listrik, dan jejaring kepemimpinan.
+      </p>
+    </div>
+
+    <div class="contact-terminal-grid">
+      <div class="contact-info-panel reveal-on-scroll">
+        <div class="contact-info-header">
+          <h3 class="contact-title">Terminal Kontak Langsung</h3>
+          <p class="contact-lead">
+            Kirimkan pesan langsung melalui kanal transmisi kelistrikan ini. Respon cepat dijamin untuk diskusi proyek teknik elektro maupun program keorganisasian.
+          </p>
+        </div>
+
+        <div class="contact-methods">
+          <a href="mailto:auriel.electrical@polsri.ac.id" class="contact-item">
+            <span class="contact-icon">✉️</span>
+            <div class="contact-meta">
+              <span class="contact-meta-label">Email Transmisi</span>
+              <span class="contact-meta-val">auriel.electrical@polsri.ac.id</span>
+            </div>
+          </a>
+
+          <a href="https://wa.me/6281234567890" target="_blank" rel="noopener" class="contact-item">
+            <span class="contact-icon">💬</span>
+            <div class="contact-meta">
+              <span class="contact-meta-label">WhatsApp Saluran Langsung</span>
+              <span class="contact-meta-val">+62 812-3456-7890</span>
+            </div>
+          </a>
+
+          <a href="https://linkedin.com" target="_blank" rel="noopener" class="contact-item">
+            <span class="contact-icon">💼</span>
+            <div class="contact-meta">
+              <span class="contact-meta-label">LinkedIn Profile</span>
+              <span class="contact-meta-val">Auriel Guntara | D3 Teknik Listrik Polsri</span>
+            </div>
+          </a>
+
+          <a href="https://instagram.com" target="_blank" rel="noopener" class="contact-item">
+            <span class="contact-icon">📸</span>
+            <div class="contact-meta">
+              <span class="contact-meta-label">Instagram Media</span>
+              <span class="contact-meta-val">@auriel_guntara</span>
+            </div>
+          </a>
+        </div>
+
+        <div style="background: rgba(255, 215, 0, 0.08); border: 1px dashed var(--border-wire); border-radius: 12px; padding: 1rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--primary-electric);">
+          📍 <strong>Lokasi:</strong> Kampus Politeknik Negeri Sriwijaya, Jl. Srijaya Negara, Bukit Besar, Palembang 30139
+        </div>
+      </div>
+
+      <div class="contact-form-panel reveal-on-scroll">
+        <form id="contact-form">
+          <div class="form-field-group">
+            <label for="contact-name" class="field-label">NAMA LENGKAP / PERUSAHAAN</label>
+            <input type="text" id="contact-name" class="field-input" placeholder="Masukkan nama Anda..." required>
+          </div>
+
+          <div class="form-field-group">
+            <label for="contact-email" class="field-label">ALAMAT EMAIL / KONTAK</label>
+            <input type="email" id="contact-email" class="field-input" placeholder="nama@email.com" required>
+          </div>
+
+          <div class="form-field-group">
+            <label for="contact-subject" class="field-label">TOPIK / SUBJEK TRANSMISI</label>
+            <input type="text" id="contact-subject" class="field-input" placeholder="Contoh: Penawaran Magang / Diskusi Proyek Panel" required>
+          </div>
+
+          <div class="form-field-group">
+            <label for="contact-msg" class="field-label">PESAN / SPESIFIKASI PROYEK</label>
+            <textarea id="contact-msg" class="field-textarea" placeholder="Tuliskan pesan detail Anda..." required></textarea>
+          </div>
+
+          <button type="submit" class="btn-transmit">
+            <span>TRANSMISIKAN PESAN KE SUBSTATION</span>
+          </button>
+
+          <div id="form-status" style="margin-top: 0.5rem; text-align: center;"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <!-- ==========================================================================
+       ⚡ FOOTER (GROUND ZERO SUBSTATION)
+       ========================================================================== -->
+  <footer class="footer-power-station">
+    <div class="footer-top-row">
+      <div class="footer-brand">
+        <img src="assets/images/polsri_logo.svg" alt="Polsri Logo" class="footer-polsri-logo">
+        <div>
+          <div class="footer-brand-title">AURIEL GUNTARA ⚡ TEKNIK LISTRIK</div>
+          <div class="footer-brand-sub">Politeknik Negeri Sriwijaya & Ketua Bidiksiba PT Bukit Asam (PTBA)</div>
+        </div>
+      </div>
+
+      <ul class="footer-quick-links">
+        <li><a href="#hero">Beranda</a></li>
+        <li><a href="#about">Tentang</a></li>
+        <li><a href="#education">Polsri</a></li>
+        <li><a href="#bidiksiba">Bidiksiba PTBA</a></li>
+        <li><a href="#skills">Keahlian</a></li>
+        <li><a href="#simulator">Simulator</a></li>
+        <li><a href="#certifications">Sertifikasi</a></li>
+      </ul>
+    </div>
+
+    <div class="footer-bottom-row">
+      <div>
+        © 2026 Auriel Guntara. Seluruh Hak Cipta Dilindungi. Didesain dengan Tema Listrik & Gradasi Kuning Emas.
+      </div>
+      <div>
+        Power Grid: 220V/380V Balanced | 50.00 Hz | Politeknik Negeri Sriwijaya
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript Modules -->
+  <script src="js/lightning.js"></script>
+  <script src="js/sparks.js"></script>
+  <script src="js/circuit.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

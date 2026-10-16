@@ -1,0 +1,242 @@
+/* ==========================================================================
+   ⚡ RESPONSIVE BREAKPOINTS & MOBILE OPTIMIZATIONS
+   ========================================================================== */
+
+/* Large Tablets & Small Laptops (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .hero-wrapper {
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+    text-align: center;
+  }
+
+  .hero-content {
+    align-items: center;
+  }
+
+  .hero-badges-wrapper {
+    justify-content: center;
+  }
+
+  .hero-cta-group {
+    justify-content: center;
+  }
+
+  .hero-quick-specs {
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .about-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .education-inner-grid {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .edu-badge-row {
+    justify-content: center;
+  }
+
+  .curriculum-chips-grid {
+    justify-content: center;
+  }
+
+  .sim-inner-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+
+  .contact-terminal-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Tablets & Mobile Navigation (max-width: 768px) */
+@media (max-width: 768px) {
+  .top-telemetry-bar {
+    padding: 0;
+  }
+
+  .telemetry-container {
+    padding: 0.45rem 0.85rem;
+    gap: 0.5rem;
+  }
+
+  .brand-polsri-logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .brand-name {
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+  }
+
+  .brand-sub {
+    font-size: 0.62rem;
+  }
+
+  .mobile-nav-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem 0.6rem;
+    font-size: 1.15rem;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 56px;
+    left: 0;
+    right: 0;
+    background: rgba(8, 9, 14, 0.98);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-wire);
+    flex-direction: column;
+    padding: 1.5rem;
+    gap: 1.25rem;
+    transform: translateY(-150%);
+    transition: transform 0.35s var(--ease-electric);
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  .nav-links.mobile-open {
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* Voltage Switcher Mobile Layout - Highly Responsive & Visible */
+  .voltage-control-box {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 999px;
+  }
+
+  .voltage-label {
+    font-size: 0.68rem;
+    gap: 0.15rem;
+  }
+
+  .voltage-btn {
+    font-size: 0.68rem;
+    padding: 0.2rem 0.45rem;
+  }
+
+  .telemetry-live-ribbon {
+    gap: 1.25rem;
+    font-size: 0.7rem;
+    justify-content: flex-start;
+    overflow-x: auto;
+  }
+
+  .hero-section {
+    padding: 3rem 1rem 4rem;
+  }
+
+  .avatar-reactor-card {
+    width: 320px;
+    height: 420px;
+  }
+
+  .floating-emblem-badge {
+    display: none; /* Avoid overflowing mobile screens */
+  }
+
+  .section-container {
+    padding: 4.5rem 1rem;
+  }
+
+  .about-pillars {
+    grid-template-columns: 1fr;
+  }
+
+  .skills-switchboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .projects-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-top-row {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-brand {
+    flex-direction: column;
+  }
+
+  .footer-quick-links {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer-bottom-row {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+}
+
+/* Small Mobile Screens (max-width: 480px) */
+@media (max-width: 480px) {
+  .brand-sub {
+    display: none;
+  }
+
+  .voltage-label {
+    display: none; /* Just keep the sleek voltage buttons on narrow screens */
+  }
+
+  .voltage-control-box {
+    padding: 2px 4px;
+    gap: 0;
+  }
+
+  .voltage-btn {
+    font-size: 0.64rem;
+    padding: 0.2rem 0.38rem;
+  }
+
+  .hero-name {
+    font-size: 2.3rem;
+  }
+
+  .hero-role {
+    font-size: 1.2rem;
+  }
+
+  .avatar-reactor-card {
+    width: 280px;
+    height: 380px;
+  }
+
+  .btn-electric-primary, .btn-electric-secondary {
+    width: 100%;
+    padding: 0.85rem 1.25rem;
+  }
+
+  .hero-quick-specs {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .education-showcase-box, .circuit-sim-box, .contact-form-panel, .contact-info-panel {
+    padding: 1.5rem;
+  }
+
+  .sim-diagnostics-row {
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}

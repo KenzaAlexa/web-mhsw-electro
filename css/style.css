@@ -1,0 +1,2003 @@
+/* ==========================================================================
+   ⚡ ELECTRIC POWER & VOLTAGE DESIGN SYSTEM
+   Theme: High-Voltage Electrical Engineering | Polsri & PTBA Bidiksiba
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  /* Default Voltage Mode: 220V Standard Gold */
+  --hue-voltage: 48;
+  --primary-electric: #FFD700;
+  --secondary-electric: #FFA000;
+  --accent-spark: #FFF176;
+  --voltage-glow: rgba(255, 215, 0, 0.45);
+  --voltage-strong-glow: rgba(255, 215, 0, 0.85);
+  --voltage-ambient: rgba(255, 193, 7, 0.12);
+
+  /* Deep High-Voltage Dark Matrix */
+  --bg-deep: #070709;
+  --bg-surface: #0E0F15;
+  --bg-card: rgba(18, 20, 29, 0.82);
+  --bg-card-hover: rgba(26, 30, 44, 0.95);
+  --border-wire: rgba(255, 215, 0, 0.18);
+  --border-active: rgba(255, 215, 0, 0.7);
+
+  /* Text & Elements */
+  --text-pure: #FFFFFF;
+  --text-bright: #F4F6FB;
+  --text-muted: #9BA3B8;
+  --text-dim: #647087;
+
+  /* Polsri & PTBA Brand Highlights */
+  --polsri-yellow: #F0ED3D;
+  --ptba-amber: #F59E0B;
+  --ptba-blue: #0284C7;
+
+  /* Typography */
+  --font-display: 'Orbitron', -apple-system, sans-serif;
+  --font-tech: 'Rajdhani', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* Transitions & Curves */
+  --ease-electric: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-snap: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: 0.2s var(--ease-electric);
+  --transition-normal: 0.35s var(--ease-electric);
+  --transition-glow: 0.5s ease;
+}
+
+/* 380V Industrial Mode */
+body[data-voltage="380V"] {
+  --primary-electric: #FFE600;
+  --secondary-electric: #FF7700;
+  --accent-spark: #FFFFFF;
+  --voltage-glow: rgba(255, 230, 0, 0.6);
+  --voltage-strong-glow: rgba(255, 230, 0, 0.95);
+  --voltage-ambient: rgba(255, 140, 0, 0.18);
+  --border-wire: rgba(255, 230, 0, 0.3);
+}
+
+/* 500kV SUTET Hyper-Voltage Mode */
+body[data-voltage="500kV"] {
+  --primary-electric: #FFF566;
+  --secondary-electric: #FF3300;
+  --accent-spark: #E6F7FF;
+  --voltage-glow: rgba(255, 245, 102, 0.75);
+  --voltage-strong-glow: rgba(255, 245, 102, 1);
+  --voltage-ambient: rgba(255, 60, 0, 0.25);
+  --border-wire: rgba(255, 245, 102, 0.45);
+}
+
+/* Reset & Base Setup */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+  background-color: var(--bg-deep);
+}
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-bright);
+  font-family: var(--font-tech);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+  min-height: 100vh;
+  letter-spacing: 0.02em;
+}
+
+/* PCB Grid Background Pattern */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: 
+    radial-gradient(circle at 50% 50%, var(--voltage-ambient) 0%, transparent 70%),
+    linear-gradient(rgba(255, 215, 0, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 215, 0, 0.03) 1px, transparent 1px);
+  background-size: 100% 100%, 48px 48px, 48px 48px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.85;
+}
+
+/* Electric Sparks Cursor Canvas */
+#sparks-canvas, #lightning-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
+
+#sparks-canvas {
+  z-index: 9999;
+}
+
+/* ==========================================================================
+   ⚡ TOP VOLTAGE REGULATOR & NAVIGATION BAR
+   ========================================================================== */
+
+.top-telemetry-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(7, 7, 9, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-wire);
+  transition: var(--transition-normal);
+}
+
+.telemetry-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Polsri & Brand Header */
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  text-decoration: none;
+}
+
+.brand-polsri-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.6));
+  transition: transform 0.3s var(--ease-electric);
+}
+
+.nav-brand:hover .brand-polsri-logo {
+  transform: scale(1.1) rotate(6deg);
+}
+
+.brand-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.brand-name {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--text-pure);
+  letter-spacing: 0.08em;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.brand-name .bolt {
+  color: var(--primary-electric);
+  text-shadow: 0 0 12px var(--primary-electric);
+  animation: pulse-bolt 1.5s infinite alternate;
+}
+
+.brand-sub {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Desktop Navigation Links */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.8rem;
+  list-style: none;
+}
+
+.nav-link {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-family: var(--font-tech);
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  position: relative;
+  padding: 0.25rem 0;
+  transition: color var(--transition-fast);
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--primary-electric), var(--secondary-electric));
+  box-shadow: 0 0 8px var(--primary-electric);
+  transition: width 0.3s var(--ease-electric);
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--primary-electric);
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+  width: 100%;
+}
+
+/* Voltage Switcher Control */
+.voltage-control-box {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(14, 15, 21, 0.95);
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-wire);
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.8);
+}
+
+.voltage-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--primary-electric);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.voltage-btn-group {
+  display: flex;
+  background: #000000;
+  border-radius: 999px;
+  padding: 2px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.voltage-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.voltage-btn.active {
+  background: linear-gradient(135deg, var(--primary-electric), var(--secondary-electric));
+  color: #070709;
+  box-shadow: 0 0 12px var(--voltage-glow);
+  font-weight: 800;
+}
+
+/* Audio Toggle Button - Removed per request */
+
+/* Mobile Toggle Hamburger */
+.mobile-nav-toggle {
+  display: none;
+  background: transparent;
+  border: 1px solid var(--border-wire);
+  color: var(--primary-electric);
+  font-size: 1.35rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   ⚡ LIVE POWER STATUS RIBBON (GRID TELEMETRY)
+   ========================================================================== */
+.telemetry-live-ribbon {
+  background: linear-gradient(90deg, #090A10, #131622, #090A10);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.12);
+  padding: 0.35rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  overflow: hidden;
+  position: relative;
+  margin-top: 60px;
+  z-index: 10;
+}
+
+.ribbon-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  white-space: nowrap;
+}
+
+.ribbon-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #00FF88;
+  box-shadow: 0 0 8px #00FF88;
+  animation: blink-indicator 1.2s infinite;
+}
+
+.ribbon-val {
+  color: var(--primary-electric);
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   ⚡ HERO SECTION (POWER STATION CORE)
+   ========================================================================== */
+.hero-section {
+  position: relative;
+  min-height: 94vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem 5rem;
+  z-index: 5;
+  overflow: hidden;
+}
+
+.hero-wrapper {
+  max-width: 1350px;
+  width: 100%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  align-items: center;
+  gap: 3.5rem;
+}
+
+/* Left Hero Content */
+.hero-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.hero-badges-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+/* High Voltage Badge */
+.voltage-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid var(--border-wire);
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--primary-electric);
+  font-weight: 700;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.15);
+  animation: pulse-glow 3s infinite alternate;
+}
+
+/* PTBA Bidiksiba Highlight Badge */
+.bidiksiba-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(255, 87, 34, 0.15));
+  border: 1px solid rgba(245, 158, 11, 0.6);
+  padding: 0.35rem 1rem;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #FFA726;
+  text-shadow: 0 0 10px rgba(255, 152, 0, 0.5);
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.25);
+  position: relative;
+  overflow: hidden;
+}
+
+.bidiksiba-pill::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: light-beam 3.5s infinite;
+}
+
+/* Polsri Education Badge */
+.polsri-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(240, 237, 61, 0.1);
+  border: 1px solid rgba(240, 237, 61, 0.4);
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-family: var(--font-tech);
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #FFF9C4;
+}
+
+.polsri-pill img {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
+}
+
+/* Hero Typography */
+.hero-title-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.hero-greeting {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  letter-spacing: 0.1em;
+  margin-bottom: 0.25rem;
+}
+
+.hero-name {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 4.8vw, 4.2rem);
+  font-weight: 900;
+  line-height: 1.08;
+  letter-spacing: 0.02em;
+  background: linear-gradient(135deg, #FFFFFF 20%, var(--primary-electric) 70%, var(--secondary-electric) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 35px var(--voltage-glow));
+  position: relative;
+}
+
+.hero-role {
+  font-family: var(--font-tech);
+  font-size: clamp(1.35rem, 2.2vw, 1.85rem);
+  font-weight: 700;
+  color: var(--primary-electric);
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+}
+
+.hero-role-campus {
+  font-size: 1.15rem;
+  font-weight: 500;
+  color: var(--text-muted);
+}
+
+.hero-bio {
+  font-size: 1.125rem;
+  color: var(--text-bright);
+  line-height: 1.7;
+  max-width: 600px;
+}
+
+.hero-bio strong {
+  color: var(--primary-electric);
+  font-weight: 600;
+}
+
+/* Call To Action Buttons */
+.hero-cta-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.25rem;
+  margin-top: 0.75rem;
+}
+
+.btn-electric-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, var(--primary-electric), var(--secondary-electric));
+  color: #070709;
+  font-family: var(--font-display);
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 0.95rem 2rem;
+  border-radius: 8px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 0 25px var(--voltage-glow);
+  transition: all 0.3s var(--ease-electric);
+}
+
+.btn-electric-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 35px var(--voltage-strong-glow);
+  filter: brightness(1.1);
+}
+
+.btn-electric-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  background: rgba(18, 20, 29, 0.85);
+  color: var(--text-bright);
+  font-family: var(--font-tech);
+  font-size: 1.05rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 0.9rem 1.85rem;
+  border-radius: 8px;
+  text-decoration: none;
+  border: 1px solid var(--border-wire);
+  cursor: pointer;
+  transition: all 0.3s var(--ease-electric);
+}
+
+.btn-electric-secondary:hover {
+  background: rgba(255, 215, 0, 0.12);
+  border-color: var(--primary-electric);
+  color: var(--primary-electric);
+  box-shadow: 0 0 20px rgba(255, 215, 0, 0.25);
+  transform: translateY(-3px);
+}
+
+/* Quick Metrics Row */
+.hero-quick-specs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(255, 215, 0, 0.12);
+  max-width: 600px;
+}
+
+.spec-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.spec-val {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: var(--primary-electric);
+  text-shadow: 0 0 12px var(--voltage-glow);
+}
+
+.spec-lbl {
+  font-family: var(--font-tech);
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ==========================================================================
+   ⚡ HERO RIGHT: ELEGANT AVATAR CARD (CLEAN & PROFESSIONAL)
+   ========================================================================== */
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.avatar-reactor-card {
+  position: relative;
+  width: 380px;
+  height: 480px;
+  background: linear-gradient(165deg, rgba(20, 24, 38, 0.95), rgba(10, 11, 16, 0.98));
+  border-radius: 24px;
+  border: 1px solid var(--border-wire);
+  box-shadow: 
+    0 25px 60px rgba(0, 0, 0, 0.8),
+    0 0 35px var(--voltage-ambient);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-electric), box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+.avatar-reactor-card:hover {
+  transform: translateY(-6px);
+  border-color: var(--primary-electric);
+  box-shadow: 
+    0 35px 80px rgba(0, 0, 0, 0.9),
+    0 0 50px var(--voltage-glow);
+}
+
+/* Plasma Arc Orbit Ring */
+.plasma-arc-ring {
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  border-radius: 32px;
+  border: 1.5px dashed rgba(255, 215, 0, 0.2);
+  pointer-events: none;
+  animation: rotate-arc 35s linear infinite;
+}
+
+/* Clean Header with Integrated Logos */
+.reactor-card-header {
+  padding: 1rem 1.4rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+  background: rgba(14, 16, 24, 0.8);
+  z-index: 2;
+}
+
+.header-brand-duo {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+}
+
+.header-brand-duo img {
+  height: 26px;
+  width: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.3));
+}
+
+.header-tag-title {
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--primary-electric);
+  letter-spacing: 0.05em;
+}
+
+/* Avatar Photo Frame */
+.avatar-photo-wrapper {
+  position: relative;
+  flex: 1;
+  margin: 1rem 1.25rem 0.75rem;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+  background: #090B12;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 65%;
+  transition: transform 0.6s var(--ease-electric);
+}
+
+.avatar-reactor-card:hover .avatar-img {
+  transform: scale(1.04);
+}
+
+/* Card Footer Clean Specs */
+.reactor-card-footer {
+  padding: 0.85rem 1.25rem;
+  background: rgba(7, 8, 12, 0.95);
+  border-top: 1px solid rgba(255, 215, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reactor-stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.reactor-stat-val {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-pure);
+}
+
+.reactor-stat-lbl {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   ⚡ SECTION COMMON ARCHITECTURE & HEADERS
+   ========================================================================== */
+.section-container {
+  max-width: 1350px;
+  margin: 0 auto;
+  padding: 6rem 1.5rem;
+  position: relative;
+  z-index: 5;
+}
+
+.section-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 4rem;
+  position: relative;
+}
+
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--primary-electric);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  background: rgba(255, 215, 0, 0.08);
+  border: 1px solid var(--border-wire);
+  padding: 0.3rem 0.85rem;
+  border-radius: 999px;
+  margin-bottom: 0.85rem;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  font-weight: 900;
+  color: var(--text-pure);
+  letter-spacing: 0.02em;
+  text-shadow: 0 0 25px rgba(255, 215, 0, 0.25);
+}
+
+.section-title .text-gradient {
+  background: linear-gradient(135deg, var(--primary-electric), var(--secondary-electric));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-subtitle {
+  font-size: 1.15rem;
+  color: var(--text-muted);
+  max-width: 650px;
+  margin-top: 0.75rem;
+}
+
+/* Electric Circuit Line Section Separator */
+.circuit-separator {
+  width: 100%;
+  height: 24px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 2rem 0;
+  overflow: hidden;
+}
+
+.circuit-separator::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-wire), var(--primary-electric), var(--border-wire), transparent);
+}
+
+.circuit-node-spark {
+  width: 12px;
+  height: 12px;
+  background: var(--primary-electric);
+  border-radius: 50%;
+  box-shadow: 0 0 15px var(--primary-electric);
+  position: relative;
+  z-index: 2;
+  animation: pulse-bolt 1.5s infinite;
+}
+
+/* ==========================================================================
+   ⚡ SECTION: ABOUT & DUAL IDENTITY (POLSRI & BIDIKSIBA PTBA)
+   ========================================================================== */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 3rem;
+  align-items: stretch;
+}
+
+.about-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-wire);
+  border-radius: 20px;
+  padding: 2.5rem;
+  backdrop-filter: blur(12px);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.about-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-electric), var(--secondary-electric));
+}
+
+.about-card-title {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-pure);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.about-text {
+  color: var(--text-bright);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.about-text strong {
+  color: var(--primary-electric);
+}
+
+/* Dual Pillar Focus */
+.about-pillars {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.pillar-item {
+  background: rgba(10, 12, 18, 0.7);
+  border: 1px solid rgba(255, 215, 0, 0.12);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  transition: border-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.pillar-item:hover {
+  border-color: var(--primary-electric);
+  transform: translateY(-3px);
+}
+
+.pillar-icon {
+  font-size: 1.75rem;
+  color: var(--primary-electric);
+}
+
+.pillar-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-pure);
+}
+
+.pillar-desc {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* Right Column: Leadership Spotlight Card (PTBA Bidiksiba) */
+.leadership-spotlight-card {
+  background: linear-gradient(170deg, rgba(28, 22, 14, 0.95), rgba(14, 15, 21, 0.98));
+  border: 1px solid rgba(245, 158, 11, 0.4);
+  border-radius: 20px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(245, 158, 11, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.leadership-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.ptba-official-logo {
+  height: 48px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 12px rgba(245, 158, 11, 0.4));
+}
+
+.bidiksiba-badge-large {
+  background: rgba(245, 158, 11, 0.2);
+  border: 1px solid rgba(245, 158, 11, 0.7);
+  color: #FFB74D;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  letter-spacing: 0.05em;
+}
+
+.leadership-title {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #FFA726;
+  line-height: 1.3;
+}
+
+.leadership-quote {
+  font-style: italic;
+  font-size: 0.98rem;
+  color: var(--text-muted);
+  border-left: 3px solid #FFA726;
+  padding-left: 1rem;
+  line-height: 1.6;
+}
+
+.leadership-responsibilities {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.leadership-responsibilities li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.65rem;
+  font-size: 0.95rem;
+  color: var(--text-bright);
+}
+
+.leadership-responsibilities li .bolt-check {
+  color: #FFB74D;
+  margin-top: 0.2rem;
+}
+
+/* ==========================================================================
+   ⚡ SECTION: EDUCATION (POLSRI HIGH-VOLTAGE TRANSMISSION PATHWAY)
+   ========================================================================== */
+.education-showcase-box {
+  background: var(--bg-card);
+  border: 1px solid var(--border-wire);
+  border-radius: 24px;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+}
+
+.education-inner-grid {
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.polsri-emblem-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1rem;
+  position: relative;
+}
+
+.polsri-emblem-center::after {
+  content: '';
+  position: absolute;
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(240, 237, 61, 0.25), transparent 70%);
+  z-index: 0;
+}
+
+.polsri-logo-large {
+  width: 140px;
+  height: 140px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5));
+  position: relative;
+  z-index: 1;
+  transition: transform 0.4s var(--ease-electric);
+}
+
+.polsri-logo-large:hover {
+  transform: scale(1.08) rotate(4deg);
+}
+
+.campus-accreditation {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--primary-electric);
+  background: rgba(255, 215, 0, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-wire);
+}
+
+.education-details {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.edu-badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.edu-degree-badge {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 700;
+  background: var(--primary-electric);
+  color: #070709;
+  padding: 0.35rem 0.85rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+}
+
+.edu-year-badge {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.edu-major-title {
+  font-family: var(--font-display);
+  font-size: 2.1rem;
+  font-weight: 800;
+  color: var(--text-pure);
+  line-height: 1.2;
+}
+
+.edu-institution {
+  font-size: 1.25rem;
+  color: var(--primary-electric);
+  font-weight: 600;
+}
+
+.edu-description {
+  font-size: 1.05rem;
+  color: var(--text-bright);
+  line-height: 1.7;
+}
+
+/* Core Curriculum Electrical Grid */
+.curriculum-chips-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.curriculum-chip {
+  background: rgba(14, 15, 21, 0.8);
+  border: 1px solid rgba(255, 215, 0, 0.2);
+  border-radius: 6px;
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  color: var(--text-bright);
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  transition: all 0.2s ease;
+}
+
+.curriculum-chip:hover {
+  border-color: var(--primary-electric);
+  color: var(--primary-electric);
+  background: rgba(255, 215, 0, 0.1);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   ⚡ SECTION: SKILLS (DISTRIBUTION CONTROL PANEL)
+   ========================================================================== */
+.skills-switchboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1.85rem;
+}
+
+.switchboard-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-wire);
+  border-radius: 18px;
+  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: blur(12px);
+  transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.switchboard-panel:hover {
+  transform: translateY(-6px);
+  border-color: var(--primary-electric);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7), 0 0 30px var(--voltage-glow);
+}
+
+.panel-header {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-bottom: 1.75rem;
+  padding-bottom: 0.85rem;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.12);
+  position: relative;
+}
+
+.panel-header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  width: 45px;
+  height: 2px;
+  background: var(--primary-electric);
+  box-shadow: 0 0 8px var(--primary-electric);
+}
+
+.panel-tagline {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--primary-electric);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+}
+
+.panel-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-pure);
+  letter-spacing: 0.02em;
+}
+
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.skill-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.skill-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.skill-name {
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--text-bright);
+}
+
+.skill-pct {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--primary-electric);
+}
+
+/* Electric Meter Bar */
+.skill-bar-meter {
+  height: 8px;
+  background: rgba(10, 12, 18, 0.9);
+  border-radius: 999px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+}
+
+.skill-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--secondary-electric), var(--primary-electric));
+  border-radius: 999px;
+  position: relative;
+  box-shadow: 0 0 10px var(--primary-electric);
+  transition: width 1.5s var(--ease-electric);
+}
+
+.skill-bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+  height: 100%;
+  background: #FFFFFF;
+  box-shadow: 0 0 8px #FFFFFF;
+  border-radius: 50%;
+  animation: pulse-bolt 1.2s infinite;
+}
+
+/* ==========================================================================
+   ⚡ SECTION: FEATURED PROJECTS (POWER GRID MATRIX)
+   ========================================================================== */
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 2.25rem;
+}
+
+.project-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-wire);
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.4s var(--ease-electric);
+  position: relative;
+}
+
+.project-card:hover {
+  transform: translateY(-8px);
+  border-color: var(--primary-electric);
+  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8), 0 0 35px var(--voltage-glow);
+}
+
+.project-media-wrap {
+  position: relative;
+  width: 100%;
+  height: 230px;
+  overflow: hidden;
+  background: #000000;
+}
+
+.project-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease-electric);
+}
+
+.project-card:hover .project-thumbnail {
+  transform: scale(1.08);
+}
+
+.project-overlay-specs {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.75rem 1rem;
+  background: linear-gradient(180deg, transparent, rgba(7, 7, 9, 0.95));
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+
+.project-cat-pill {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  background: rgba(255, 215, 0, 0.18);
+  color: var(--primary-electric);
+  padding: 0.2rem 0.6rem;
+  border-radius: 4px;
+  font-weight: 700;
+  border: 1px solid var(--border-wire);
+}
+
+.project-body {
+  padding: 1.85rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: 1rem;
+}
+
+.project-title {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-pure);
+  line-height: 1.3;
+}
+
+.project-desc {
+  font-size: 0.98rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  flex: 1;
+}
+
+.project-tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.project-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+}
+
+.project-btn-details {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  background: transparent;
+  border: 1px solid var(--border-wire);
+  color: var(--primary-electric);
+  font-family: var(--font-tech);
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 0.75rem 1.25rem;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: all 0.25s ease;
+}
+
+.project-btn-details:hover {
+  background: var(--primary-electric);
+  color: #070709;
+  border-color: var(--primary-electric);
+  box-shadow: 0 0 15px var(--voltage-glow);
+}
+
+/* ==========================================================================
+   ⚡ INTERACTIVE CIRCUIT SIMULATOR: OHM'S LAW & POWER ANALYZER
+   ========================================================================== */
+.circuit-sim-box {
+  background: linear-gradient(160deg, rgba(14, 18, 28, 0.95), rgba(8, 10, 16, 0.98));
+  border: 1px solid var(--border-wire);
+  border-radius: 24px;
+  padding: 2.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), 0 0 40px var(--voltage-ambient);
+}
+
+.sim-inner-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+.sim-controls-col {
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.sim-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.slider-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.slider-title {
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: var(--text-pure);
+}
+
+.slider-display-val {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: var(--primary-electric);
+  text-shadow: 0 0 10px var(--voltage-glow);
+}
+
+/* Custom Electric Sliders */
+.electric-range-input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 8px;
+  border-radius: 999px;
+  background: #1A1D28;
+  outline: none;
+  border: 1px solid rgba(255, 215, 0, 0.2);
+}
+
+.electric-range-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--primary-electric);
+  cursor: pointer;
+  box-shadow: 0 0 15px var(--primary-electric);
+  border: 2px solid #000000;
+  transition: transform 0.15s ease;
+}
+
+.electric-range-input::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+}
+
+/* Live Electric Meter Dial & Display */
+.sim-meter-col {
+  background: #090B12;
+  border: 1px solid var(--border-wire);
+  border-radius: 20px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  position: relative;
+  box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+}
+
+.gauge-visual-wrap {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gauge-svg-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.gauge-bg-circle {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.06);
+  stroke-width: 12;
+}
+
+.gauge-fill-circle {
+  fill: none;
+  stroke: var(--primary-electric);
+  stroke-width: 12;
+  stroke-linecap: round;
+  stroke-dasharray: 565;
+  stroke-dashoffset: 200;
+  filter: drop-shadow(0 0 10px var(--primary-electric));
+  transition: stroke-dashoffset 0.3s ease;
+}
+
+.gauge-center-readout {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.readout-watts {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--text-pure);
+  line-height: 1;
+}
+
+.readout-unit {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--primary-electric);
+  font-weight: 700;
+}
+
+.sim-diagnostics-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  width: 100%;
+  text-align: center;
+  border-top: 1px solid rgba(255, 215, 0, 0.1);
+  padding-top: 1rem;
+}
+
+.diag-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.diag-val {
+  font-family: var(--font-mono);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-pure);
+}
+
+.diag-lbl {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   ⚡ SECTION: CERTIFICATIONS & HONORS (SAFETY STANDARDS)
+   ========================================================================== */
+.certs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.cert-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-wire);
+  border-radius: 16px;
+  padding: 1.75rem;
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  transition: all 0.3s var(--ease-electric);
+}
+
+.cert-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary-electric);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), 0 0 20px var(--voltage-ambient);
+}
+
+.cert-badge-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid var(--border-wire);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: var(--primary-electric);
+  flex-shrink: 0;
+}
+
+.cert-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.cert-name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-pure);
+}
+
+.cert-issuer {
+  font-size: 0.9rem;
+  color: var(--primary-electric);
+  font-weight: 600;
+}
+
+.cert-desc {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   ⚡ SECTION: CONTACT (SUBSTATION DISPATCH TERMINAL)
+   ========================================================================== */
+.contact-terminal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.25fr;
+  gap: 3rem;
+  align-items: stretch;
+}
+
+.contact-info-panel {
+  background: var(--bg-card);
+  border: 1px solid var(--border-wire);
+  border-radius: 20px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.contact-info-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.contact-title {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-pure);
+}
+
+.contact-lead {
+  font-size: 1.05rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+
+.contact-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: var(--text-bright);
+  padding: 0.85rem 1.15rem;
+  background: rgba(14, 15, 21, 0.8);
+  border: 1px solid var(--border-wire);
+  border-radius: 12px;
+  transition: all 0.25s ease;
+}
+
+.contact-item:hover {
+  border-color: var(--primary-electric);
+  color: var(--primary-electric);
+  transform: translateX(6px);
+  box-shadow: 0 0 15px var(--voltage-ambient);
+}
+
+.contact-icon {
+  font-size: 1.35rem;
+  color: var(--primary-electric);
+}
+
+.contact-meta {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact-meta-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.contact-meta-val {
+  font-weight: 600;
+  font-size: 0.98rem;
+}
+
+/* Contact Form Terminal */
+.contact-form-panel {
+  background: linear-gradient(165deg, rgba(20, 24, 38, 0.9), rgba(11, 13, 20, 0.95));
+  border: 1px solid var(--border-wire);
+  border-radius: 20px;
+  padding: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+}
+
+.form-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.field-label {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--primary-electric);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.field-input, .field-textarea {
+  background: rgba(8, 9, 14, 0.85);
+  border: 1px solid var(--border-wire);
+  border-radius: 10px;
+  padding: 0.85rem 1.15rem;
+  font-family: var(--font-tech);
+  font-size: 1.05rem;
+  color: var(--text-pure);
+  outline: none;
+  transition: all 0.25s ease;
+}
+
+.field-input:focus, .field-textarea:focus {
+  border-color: var(--primary-electric);
+  box-shadow: 0 0 15px var(--voltage-glow);
+  background: rgba(14, 16, 24, 0.95);
+}
+
+.field-textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.btn-transmit {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, var(--primary-electric), var(--secondary-electric));
+  color: #070709;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 1rem;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 25px var(--voltage-glow);
+  transition: all 0.3s ease;
+}
+
+.btn-transmit:hover {
+  filter: brightness(1.15);
+  box-shadow: 0 0 35px var(--voltage-strong-glow);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   ⚡ FOOTER (GROUND ZERO SUBSTATION)
+   ========================================================================== */
+.footer-power-station {
+  background: #050507;
+  border-top: 1px solid var(--border-wire);
+  padding: 4rem 1.5rem 2rem;
+  position: relative;
+  z-index: 5;
+}
+
+.footer-top-row {
+  max-width: 1350px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.footer-polsri-logo {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.footer-brand-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--text-pure);
+}
+
+.footer-brand-sub {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+}
+
+.footer-quick-links {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+}
+
+.footer-quick-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: color var(--transition-fast);
+}
+
+.footer-quick-links a:hover {
+  color: var(--primary-electric);
+}
+
+.footer-bottom-row {
+  max-width: 1350px;
+  margin: 2rem auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-dim);
+}
+
+/* ==========================================================================
+   ⚡ PROJECT MODAL
+   ========================================================================== */
+.project-modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(3, 4, 7, 0.88);
+  backdrop-filter: blur(14px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.project-modal-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.project-modal-dialog {
+  background: #0E1018;
+  border: 1px solid var(--border-wire);
+  border-radius: 20px;
+  max-width: 800px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 50px var(--voltage-glow);
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.3s var(--ease-electric);
+}
+
+.project-modal-backdrop.active .project-modal-dialog {
+  transform: translateY(0) scale(1);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1.25rem;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--border-wire);
+  color: var(--text-bright);
+  font-size: 1.5rem;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: var(--primary-electric);
+  color: #000000;
+}
+
+.modal-img-wrap {
+  width: 100%;
+  height: 320px;
+  overflow: hidden;
+}
+
+.modal-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-body {
+  padding: 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-pure);
+}
+
+.modal-description {
+  font-size: 1.05rem;
+  color: var(--text-bright);
+  line-height: 1.7;
+}
+
+.modal-specs-list {
+  background: rgba(5, 7, 12, 0.85);
+  border: 1px solid var(--border-wire);
+  border-radius: 12px;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--primary-electric);
+}

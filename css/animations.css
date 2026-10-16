@@ -1,0 +1,166 @@
+/* ==========================================================================
+   ⚡ ELECTRIC ANIMATIONS & KEYFRAMES
+   ========================================================================== */
+
+/* Lightning & Neon Pulsing */
+@keyframes pulse-bolt {
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 4px var(--primary-electric));
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 16px var(--primary-electric)) drop-shadow(0 0 25px #FFFFFF);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 4px var(--primary-electric));
+    opacity: 0.85;
+  }
+}
+
+/* Neon Flicker Effect */
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
+    text-shadow: 
+      0 0 5px #FFF,
+      0 0 10px var(--primary-electric),
+      0 0 20px var(--primary-electric),
+      0 0 40px var(--secondary-electric);
+    opacity: 1;
+  }
+  20%, 24%, 55% {
+    text-shadow: none;
+    opacity: 0.65;
+  }
+}
+
+/* Arc Ring Rotation */
+@keyframes rotate-arc {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Gentle Floating for Badges */
+@keyframes float-gentle {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(1.5deg);
+  }
+}
+
+/* Vertical Scanline */
+@keyframes scan-vertical {
+  0% {
+    top: 5%;
+    opacity: 0.2;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    top: 95%;
+    opacity: 0.2;
+  }
+}
+
+/* Telemetry Dot Blinking */
+@keyframes blink-indicator {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
+}
+
+/* Light Beam Gliding across Badges */
+@keyframes light-beam {
+  0% {
+    left: -100%;
+  }
+  30%, 100% {
+    left: 200%;
+  }
+}
+
+/* High Voltage Glow Pulse */
+@keyframes pulse-glow {
+  0% {
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.15);
+  }
+  100% {
+    box-shadow: 0 0 24px rgba(255, 215, 0, 0.45);
+  }
+}
+
+/* Current Flow Border Dash Animation */
+.current-flow-border {
+  position: relative;
+}
+
+.current-flow-border::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    var(--primary-electric) 50%, 
+    transparent 100%);
+  background-size: 200% 100%;
+  border-radius: inherit;
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  animation: current-stream 3s linear infinite;
+}
+
+.current-flow-border:hover::after {
+  opacity: 1;
+}
+
+@keyframes current-stream {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Electric Shake / Shock Effect on Trigger */
+.electric-shock-hit {
+  animation: shock-shake 0.4s ease-in-out forwards;
+}
+
+@keyframes shock-shake {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3px, 2px); filter: brightness(1.6); }
+  40% { transform: translate(3px, -2px); filter: brightness(1.3); }
+  60% { transform: translate(-2px, 1px); }
+  80% { transform: translate(2px, -1px); }
+  100% { transform: translate(0, 0); filter: brightness(1); }
+}
+
+/* Scroll Reveal Base Classes */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s var(--ease-electric), transform 0.7s var(--ease-electric);
+  will-change: opacity, transform;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
